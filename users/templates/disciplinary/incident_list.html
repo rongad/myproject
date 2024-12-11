@@ -29,9 +29,7 @@
                         <td>{{ incident.description }}</td>
                         <td>{{ incident.date|date:"M d, Y H:i" }}</td>
                         <td>
-                            <span class="badge bg-{% if incident.severity_level.level_description == 'MINOR' %}warning{% elif incident.severity_level.level_description == 'MODERATE' %}info{% else %}danger{% endif %}">
-                                {{ incident.severitylevel}}
-                            </span>
+                                 {{ incident.severity_level}}
                         </td>
                         <td>
                             {{ incident.reported_by}}
