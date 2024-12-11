@@ -51,14 +51,16 @@ class SeverityLevel(models.Model):
 
 class DisciplinaryIncident(models.Model):
     incident_id = models.AutoField(primary_key=True)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    description = models.TextField()
+    student = models.TextField(max_length=50)
+    description = models.TextField(max_length=200)
     date = models.DateTimeField(default=timezone.now)
-    severity_level = models.ForeignKey(SeverityLevel, on_delete=models.PROTECT)
-    reported_by = models.ForeignKey(Staff, on_delete=models.PROTECT, related_name='reported_incidents')
-
-    def __str__(self):
-        return f"Incident {self.incident_id} - {self.student.name}"
+    severity_level = models.CharField(max_length=20, choices=[
+        ('PENDING', 'Pending'),
+        ('APPROVED', 'Approved'),
+        ('COMPLETED', 'Completed'),
+        ('CANCELLED', 'Cancelled')
+    ], default='PENDING')
+    reported_by = models.TextField(max_length=200)
 
 class Sanction(models.Model):
     sanction_id = models.AutoField(primary_key=True)

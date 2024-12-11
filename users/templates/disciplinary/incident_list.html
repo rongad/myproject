@@ -7,53 +7,39 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
+            <button><a href="{% url 'incident_new' %}">Add Incident</a></button>
             <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Student</th>
+                        <th>Description</th>
                         <th>Date</th>
                         <th>Severity</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>Reported By</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for incident in incidents %}
                     <tr>
                         <td>{{ incident.incident_id }}</td>
-                        <td>
-                            <a href="{% url 'student_history' student_id=incident.student.student_id %}">
-                                {{ incident.student.name }}
-                            </a>
+                        <td>{{ incident.student }}
                         </td>
+                        <td>{{ incident.description }}</td>
                         <td>{{ incident.date|date:"M d, Y H:i" }}</td>
                         <td>
                             <span class="badge bg-{% if incident.severity_level.level_description == 'MINOR' %}warning{% elif incident.severity_level.level_description == 'MODERATE' %}info{% else %}danger{% endif %}">
-                                {{ incident.severity_level.level_description }}
+                                {{ incident.severitylevel}}
                             </span>
                         </td>
                         <td>
-                            {% if incident.sanction_set.exists %}
-                                {% with sanction=incident.sanction_set.first %}
-                                <span class="badge bg-{% if sanction.status == 'PENDING' %}warning{% elif sanction.status == 'APPROVED' %}success{% elif sanction.status == 'COMPLETED' %}info{% else %}danger{% endif %}">
-                                    {{ sanction.status }}
-                                </span>
-                                {% endwith %}
-                            {% else %}
-                                <span class="badge bg-secondary">No Sanction</span>
-                            {% endif %}
+                            {{ incident.reported_by}}
                         </td>
                         <td>
-                            <a href="{% url 'incident_detail' incident_id=incident.incident_id %}" class="btn btn-sm btn-primary">View</a>
-                            {% if not incident.sanction_set.exists %}
-                            <a href="{% url 'issue_sanction' incident_id=incident.incident_id %}" class="btn btn-sm btn-warning">Issue Sanction</a>
-                            {% endif %}
+                            <button><a href="{% url 'incident_delete' incident.incident_id %}">Del</a></button>
+                            <button><a href="{% url 'incident_edit' incident.incident_id %}">Edit</a></button>
                         </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="6" class="text-center">No incidents reported yet.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
