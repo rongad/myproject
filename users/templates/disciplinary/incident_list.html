@@ -1,0 +1,64 @@
+{% extends 'disciplinary/base_disciplinary.html' %}
+
+{% block disciplinary_content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Disciplinary Incidents</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Student</th>
+                        <th>Date</th>
+                        <th>Severity</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for incident in incidents %}
+                    <tr>
+                        <td>{{ incident.incident_id }}</td>
+                        <td>
+                            <a href="{% url 'student_history' student_id=incident.student.student_id %}">
+                                {{ incident.student.name }}
+                            </a>
+                        </td>
+                        <td>{{ incident.date|date:"M d, Y H:i" }}</td>
+                        <td>
+                            <span class="badge bg-{% if incident.severity_level.level_description == 'MINOR' %}warning{% elif incident.severity_level.level_description == 'MODERATE' %}info{% else %}danger{% endif %}">
+                                {{ incident.severity_level.level_description }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if incident.sanction_set.exists %}
+                                {% with sanction=incident.sanction_set.first %}
+                                <span class="badge bg-{% if sanction.status == 'PENDING' %}warning{% elif sanction.status == 'APPROVED' %}success{% elif sanction.status == 'COMPLETED' %}info{% else %}danger{% endif %}">
+                                    {{ sanction.status }}
+                                </span>
+                                {% endwith %}
+                            {% else %}
+                                <span class="badge bg-secondary">No Sanction</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'incident_detail' incident_id=incident.incident_id %}" class="btn btn-sm btn-primary">View</a>
+                            {% if not incident.sanction_set.exists %}
+                            <a href="{% url 'issue_sanction' incident_id=incident.incident_id %}" class="btn btn-sm btn-warning">Issue Sanction</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No incidents reported yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

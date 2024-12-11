@@ -1,0 +1,27 @@
+Fixed codes
+
+#Login problem
+1.Wala ni gana ang login kay although ga gamit og default nga Django authenticate method, pero ang login_view gagamit og custom LoginForm sa forms.py
+
+Added codes
+
+#homepage problem
+1. naka bantay ko walay base.html file pero nag extends siya, hence mo error syag:
+TemplateDoesNotExist at /view_transaction/
+base.html
+
+Added codes:
+
+#service-card(view transaction part)
+1.I noticed nga although naa nag file nga view_transaction wala syay button sa front-end para ma access so ako ge addan
+ og service-card nga div
+
+# changed transaction models
+nga ang default time zone kay ma record sa same nga adlaw/oras	
+
+#ge base nako ang color sa base.html from nav header in homepage
+Summary:
+1. Login works na and ge remove nako ang loginform nga class sa forms.py
+2. ga add og base.html pero basic ra
+3. wala rakoi ge change mostly sa current design
+4. ga add kog div sa header named user-info para makita kinsa naka login og makita nga nigana ang login

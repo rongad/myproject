@@ -1,0 +1,122 @@
+{% extends 'disciplinary/base_disciplinary.html' %}
+
+{% block disciplinary_content %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Student Information</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>{{ student.name }}</h4>
+                <p>Student ID: {{ student.student_id }}</p>
+                <p>Grade Level: {{ student.grade_level }}</p>
+                <p>Section: {{ student.section }}</p>
+            </div>
+            <div class="col-md-6">
+                <h4>Incident Summary</h4>
+                <p>Total Incidents: {{ incident_count }}</p>
+                <div class="severity-distribution">
+                    {% for severity in severity_distribution %}
+                    <div class="mb-2">
+                        <span class="badge bg-{% if severity.severity_level__level_description == 'MINOR' %}warning{% elif severity.severity_level__level_description == 'MODERATE' %}info{% else %}danger{% endif %}">
+                            {{ severity.severity_level__level_description }}
+                        </span>
+                        <span class="ms-2">{{ severity.count }} incident(s)</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3>Disciplinary History</h3>
+    </div>
+    <div class="card-body">
+        <div class="timeline">
+            {% for incident in incidents %}
+            <div class="timeline-item">
+                <div class="timeline-date">
+                    {{ incident.date|date:"M d, Y" }}
+                </div>
+                <div class="timeline-content">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <span class="badge bg-{% if incident.severity_level.level_description == 'MINOR' %}warning{% elif incident.severity_level.level_description == 'MODERATE' %}info{% else %}danger{% endif %}">
+                                {{ incident.severity_level.level_description }}
+                            </span>
+                            <span class="ms-2">Reported by: {{ incident.reported_by.name }}</span>
+                        </div>
+                        <div class="card-body">
+                            <p>{{ incident.description }}</p>
+                            {% if incident.sanction_set.exists %}
+                            {% with sanction=incident.sanction_set.first %}
+                            <div class="sanction-details mt-3">
+                                <h5>Sanction Details</h5>
+                                <p>{{ sanction.description }}</p>
+                                <p>Duration: {{ sanction.duration }} days</p>
+                                <p>Status: 
+                                    <span class="badge bg-{% if sanction.status == 'PENDING' %}warning{% elif sanction.status == 'APPROVED' %}success{% elif sanction.status == 'COMPLETED' %}info{% else %}danger{% endif %}">
+                                        {{ sanction.status }}
+                                    </span>
+                                </p>
+                            </div>
+                            {% endwith %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-center">No disciplinary incidents recorded.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 40px;
+    margin-bottom: 30px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: -30px;
+    width: 2px;
+    background-color: #dee2e6;
+}
+
+.timeline-item:last-child::before {
+    bottom: 0;
+}
+
+.timeline-date {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.timeline-content {
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.severity-distribution {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.5em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            padding: 0.5em;
+            margin-bottom: 1em;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 0.5em;
+            background: #5cb85c;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #4cae4c;
+        }
+
+        .redirect-link {
+            text-align: center;
+            margin-top: 1em;
+        }
+
+        .redirect-link a {
+            color: #5cb85c;
+            text-decoration: none;
+        }
+
+        .redirect-link a:hover {
+            text-decoration: underline;
+        }
+
+        .message {
+            margin-bottom: 1em;
+            text-align: center;
+            color: #d9534f;
+        }
+
+        .success-message {
+            color: #5cb85c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create an account</h2>
+
+        <!-- Display success or error messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {% if message.tags == 'success' %}success-message{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <label for="username">Username</label>
+            {{ form.username.errors }}
+            {{ form.username }}
+
+            <label for="first_name">First Name</label>
+            {{ form.first_name.errors }}
+            {{ form.first_name }}
+
+            <label for="last_name">Last Name</label>
+            {{ form.last_name.errors }}
+            {{ form.last_name }}
+
+            <label for="email">Email</label>
+            {{ form.email.errors }}
+            {{ form.email }}
+
+            <label for="password">Password</label>
+            {{ form.password1.errors }}
+            {{ form.password1 }}
+
+            <label for="password">Confirm Password</label>
+            {{ form.password2.errors }}
+            {{ form.password2 }}
+
+            <button type="submit">Register</button>
+        </form>
+
+        <div class="redirect-link">
+            <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">All Transactions</h1>
+    
+    {% if transactions %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.title }}</td>
+                        <td>{{ transaction.description }}</td>
+                        <td>${{ transaction.amount }}</td>
+                        <td>{{ transaction.date }}</td>
+                        <td>{{ transaction.date }}</td>
+                        <td>
+                            <a href="{% url 'edit_transaction' transaction.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'delete_transaction' transaction.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="alert alert-info">No transactions found. <a href="{% url 'add_transaction' %}" class="alert-link">Add a transaction</a>.</p>
+    {% endif %}
+
+    <div class="mt-3">
+        <a href="{% url 'add_transaction' %}" class="btn btn-primary">Add New Transaction</a>
+    </div>
+</div>
+{% endblock %}

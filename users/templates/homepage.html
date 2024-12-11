@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOMEPAGE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        
+        .header {
+            background-color: #00008B;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            gap: 10px; 
+        }
+        .title {
+            font-size: 24px;
+            color: white; 
+        }
+        
+        .services-section {
+            display: flex;
+            justify-content: space-around;
+            padding: 40px 10px;
+            background-color: #fff;
+        }
+        
+        .service-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 22%;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-card img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 20px;
+        }
+        
+        .service-card h3 {
+            color: #5f4b8b;
+            margin-bottom: 10px;
+        }
+        
+        .service-card p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        .service-card a {
+            text-decoration: none;
+            color: #5f4b8b;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .service-card a:hover {
+            text-decoration: underline;
+        }
+        input[type=text] {
+            transition: width 0.4s ease-in-out;
+          }
+          
+          input[type=text]:focus {
+            width: 50%;
+            align-content: center;
+          }
+          .logo {
+            height: 50px; 
+        }
+        .user-info {
+            color: white;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 14px;
+        }
+        .logout-link {
+            color: white;
+            text-decoration: underline;
+            margin-left: 10px;
+        }
+        .logout-link:hover {
+            color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        {% load static %}
+        <img src="{% static 'images/ACT_WHITE_LOGO.png' %}" alt="Logo" class="logo">
+        <EM><h1 class="title">STUDENT DISCIPLINARY TRACKER SYSTEM</h1></EM> 
+        {% if user.is_authenticated %}
+        <div class="user-info">
+            <p>Welcome, {{ user.username }}! <a href="{% url 'logout' %}" class="logout-link">Logout</a></p>
+        </div>
+        {% endif %}
+    </div>
+    <div class="services-section">
+        <div class="service-card">
+            <img src="{% static 'images/disciplinary.png' %}" alt="Logo" class="logo" style="width:90px;height:80px;"><br>
+            <h3>Disciplinary System</h3>
+            <p>Manage student disciplinary incidents</p>
+            <div>
+                {% if user.is_authenticated and user.staff %}
+                    {% if user.staff.role == 'POD' %}
+                    <a href="{% url 'report_incident' %}">Report Incident</a>
+                    <a href="{% url 'incident_list' %}">View Incidents</a>
+                    {% elif user.staff.role == 'ADMIN' %}
+                    <a href="{% url 'incident_list' %}">Review Incidents</a>
+                    {% endif %}
+                {% else %}
+                <p>Access restricted to staff members</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="service-card">
+            <img src="{% static 'images/transaction.png' %}" alt="Transactions" class="logo" style="width:90px;height:80px;"><br>
+            <h3>Transactions</h3>
+            <p>View and manage transactions</p>
+            <a href="{% url 'view_transaction' %}">View Transactions</a>
+        </div>
+    </div>
+
+</body>
+</html>

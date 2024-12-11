@@ -1,0 +1,56 @@
+{% extends 'disciplinary/base_disciplinary.html' %}
+
+{% block disciplinary_content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Report Disciplinary Incident</h2>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="student_id" class="form-label">Student</label>
+                <select name="student_id" id="student_id" class="form-select" required>
+                    <option value="">Select a student</option>
+                    {% for student in students %}
+                    <option value="{{ student.student_id }}">{{ student.name }} - Grade {{ student.grade_level }}{{ student.section }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="severity_level" class="form-label">Severity Level</label>
+                <select name="severity_level" id="severity_level" class="form-select" required>
+                    <option value="">Select severity level</option>
+                    {% for level in severity_levels %}
+                    <option value="{{ level.level_id }}">{{ level.level_description }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="description" id="description" class="form-control" rows="4" required></textarea>
+                <div class="form-text">
+                    Please provide a detailed description of the incident, including what happened, where it occurred, and any witnesses.
+                </div>
+            </div>
+            
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">Report Incident</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Add client-side validation if needed
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const description = document.getElementById('description').value.trim();
+        if (description.length < 10) {
+            e.preventDefault();
+            alert('Please provide a more detailed description of the incident (at least 10 characters).');
+        }
+    });
+</script>
+{% endblock %}
