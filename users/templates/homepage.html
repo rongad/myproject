@@ -111,7 +111,7 @@
     <div class="services-section">
         <div class="service-card">
             <img src="{% static 'images/disciplinary.png' %}" alt="Logo" class="logo" style="width:90px;height:80px;"><br>
-            <h3>Disciplinary System</h3>
+            <h3>Profile</h3>
             <p>Manage student disciplinary incidents</p>
             <div>
                 {% if user.is_authenticated and user.staff %}
@@ -123,15 +123,10 @@
                     {% endif %}
                 {% else %}
                 <p>Access restricted to staff members</p>
+                <a href="{% url 'profile_list' %}">View Profiles</a>
                 {% endif %}
             </div>
-        </div>
-        <div class="service-card">
-            <img src="{% static 'images/transaction.png' %}" alt="Transactions" class="logo" style="width:90px;height:80px;"><br>
-            <h3>Transactions</h3>
-            <p>View and manage transactions</p>
-            <a href="{% url 'view_transaction' %}">View Transactions</a>
-        </div>
+        </div>        
         <div class="service-card">
             <img src="{% static 'images/transaction.png' %}" alt="Transactions" class="logo" style="width:90px;height:80px;"><br>
             <h3>Incident Reporting</h3>

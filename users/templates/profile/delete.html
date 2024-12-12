@@ -1,0 +1,17 @@
+{% extends 'disciplinary/base_disciplinary.html' %}
+
+{% block disciplinary_content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Delete Disciplinary Incidents</h2>
+    </div>
+    <div class="card-body">
+        <form method = "POST">
+            {% csrf_token %}
+            <p>Delete this profile {{profile.user.username}}?</p>
+
+            <button type="submit">Confirm</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -16,6 +16,7 @@
                         <th>Description</th>
                         <th>Date</th>
                         <th>Severity</th>
+                        <th>Sanction</th>
                         <th>Reported By</th>
                         <th>Action</th>
                     </tr>
@@ -28,12 +29,9 @@
                         </td>
                         <td>{{ incident.description }}</td>
                         <td>{{ incident.date|date:"M d, Y H:i" }}</td>
-                        <td>
-                                 {{ incident.severity_level}}
-                        </td>
-                        <td>
-                            {{ incident.reported_by}}
-                        </td>
+                        <td>{{ incident.severity_level}}</td>
+                        <td>{{ incident.sanction}}</td>
+                        <td>{{ incident.reported_by}}</td>
                         <td>
                             <button><a href="{% url 'incident_delete' incident.incident_id %}">Del</a></button>
                             <button><a href="{% url 'incident_edit' incident.incident_id %}">Edit</a></button>
@@ -42,6 +40,8 @@
                     {% endfor %}
                 </tbody>
             </table>
+            <hr>
+            Total Incidents: {{incidents.count}}
         </div>
     </div>
 </div>

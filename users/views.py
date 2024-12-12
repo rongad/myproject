@@ -60,39 +60,4 @@ def logout_view(request):
 def homepage_view(request):
     return render(request, 'homepage.html')
 
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Transaction
 
-@login_required
-def add_transaction(request):
-    if request.method == 'POST':
-        title = request.POST['title']
-        description = request.POST['description']
-        amount = request.POST['amount']
-        Transaction.objects.create(title=title, description=description, amount=amount)
-        return redirect('homepage')
-    return render(request, 'add_transaction.html')
-
-@login_required
-def edit_transaction(request, pk):
-    transaction = get_object_or_404(Transaction, pk=pk)
-    if request.method == 'POST':
-        transaction.title = request.POST['title']
-        transaction.description = request.POST['description']
-        transaction.amount = request.POST['amount']
-        transaction.save()
-        return redirect('homepage')
-    return render(request, 'edit_transaction.html', {'transaction': transaction})
-
-@login_required
-def delete_transaction(request, pk):
-    transaction = get_object_or_404(Transaction, pk=pk)
-    if request.method == 'POST':
-        transaction.delete()
-        return redirect('homepage')
-    return render(request, 'delete_transaction.html', {'transaction': transaction})
-
-@login_required
-def view_transaction(request):
-    transactions = Transaction.objects.all()
-    return render(request, 'view_transaction.html', {'transactions': transactions})

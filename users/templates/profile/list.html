@@ -1,0 +1,36 @@
+{% extends 'profile/base_profile.html' %}
+
+{% block profile_content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Profile Listing</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <button><a href="{% url 'profile_new' %}">Add Profile</a></button>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Bio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for profile in profiles %}
+                    <tr>
+                        <td>{{ profile.user }}</td>
+                        <td>{{ profile.bio }}</td>
+                        <td>
+                            <button><a href="{% url 'profile_delete' profile.id %}">Del</a></button>
+                            <button><a href="{% url 'profile_edit' profile.id %}">Edit</a></button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+            Total Profiles: {{profiles.count}}
+        </div>
+    </div>
+</div>
+{% endblock %}

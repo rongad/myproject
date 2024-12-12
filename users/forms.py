@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import DisciplinaryIncident
+from .models import DisciplinaryIncident, Profile
 
 class RegisterForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True)
@@ -16,12 +16,13 @@ class RegisterForm(UserCreationForm):
 class IncidentForm(forms.ModelForm):
     class Meta:
         model = DisciplinaryIncident
-        fields = ("student", "description","date","severity_level","reported_by")
+        fields = ("student", "description","date","severity_level","sanction","reported_by")
         widgets = {
             'student' : forms.TextInput(attrs = {'class': 'form-control my-5'}),
             'description' : forms.TextInput(attrs = {'class': 'form-control my-5'}),
-            'date' : forms.DateInput(),
+            'date' : forms.DateTimeInput(),
             'severity_level' : forms.Select(attrs = {'class': 'form-control my-5'}),
+            'sanction' : forms.Select(attrs = {'class': 'form-control my-5'}),
             'reported_by' : forms.TextInput(attrs = {'class': 'form-control my-5'}),
         }
 
@@ -30,10 +31,21 @@ class IncidentForm(forms.ModelForm):
             'description' : "Enter description:",
             'data' : "Enter date:",
             'severity_level' : "Severity Level:",
+            'sanction' : "Sanction:",
             'reported_by' : "Reported by:",
         }
 
-    
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ("user", "bio")
+        widgets = {
+            'user' : forms.Select(attrs = {'class': 'form-control my-5'}),
+            'bio' : forms.TextInput(attrs = {'class': 'form-control my-5'}),
+        }
 
-# Ge remove ang Login form kay not needed na
-# Django authentication man gigamit sa views.py
+        labels = {
+            'user' : "Select User:",
+            'bio' : "Enter Bio:",
+        }
+
